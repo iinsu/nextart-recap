@@ -4,6 +4,7 @@ import Image from "next/image";
 import styled from "styled-components";
 
 const Wrapper = styled.nav`
+  position: relative;
   display: flex;
   gap: 10px;
   flex-direction: column;
@@ -21,6 +22,8 @@ const Wrapper = styled.nav`
 const Logo = styled(Image)`
   max-width: 100px;
   margin-bottom: 5px;
+  height: auto !important;
+  position: relative !important;
 `;
 
 const LinkBox = styled.div`
@@ -37,14 +40,14 @@ const NavBar = () => {
   const router = useRouter();
   return (
     <Wrapper>
-      <Logo src="/vercel.svg" width={80} height={80} alt="Logo" />
+      <Logo src="/vercel.svg" fill alt="Logo" />
       <LinkBox>
         <LinkTag href="/" className={router.pathname === "/" && "active"}>
           Home
         </LinkTag>
         <LinkTag
           href="/about"
-          className={router.pathname === "/about" && "acitve"}
+          className={router.pathname === "/about" && "active"}
         >
           About
         </LinkTag>
