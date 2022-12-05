@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+
+const API_KEY = process.env.API_KEY;
+
 const nextConfig = {
   async rewrites() {
     return [
