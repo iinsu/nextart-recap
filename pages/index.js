@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -23,26 +24,37 @@ const MovieImg = styled(Image)`
   position: relative !important;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
   &:hover {
     transform: scale(1.05) translateY(-10px);
   }
 `;
 
-export default function Home() {
-  const [movies, setMovies] = useState();
+const MovieTitle = styled.h4`
+  cursor: pointer;
+`;
 
-  useEffect(() => {
-    (async () => {
-      const { results } = await (await fetch(`/api/movies`)).json();
-      setMovies(results);
-    })();
-  }, []);
+const fetchMovies = async () => {
+  const response = await fetch(`/api/movies`);
+  const json = await response.json();
+  const { results } = json;
+  return results;
+};
+
+export default function Home() {
+  const movieList = useQuery(["movieList"], () => fetchMovies());
+
+  if (movieList.isLoading) {
+    return <span>Loading...</span>;
+  }
+  if (movieList.isError) {
+    return <span>Error: {movieList.error.message}</span>;
+  }
 
   return (
     <Wrapper>
       <Seo title="Home" />
-      {!movies && <h4>Loading...</h4>}
-      {movies?.map((movie) => (
+      {movieList.data.map((movie) => (
         <>
           <Movie key={movie.id}>
             <MovieImg
@@ -50,7 +62,7 @@ export default function Home() {
               alt="Poster"
               fill
             />
-            <h4>{movie.original_title}</h4>
+            <MovieTitle>{movie.original_title}</MovieTitle>
           </Movie>
         </>
       ))}
