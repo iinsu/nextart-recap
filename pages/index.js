@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import Seo from "../components/Seo";
 
@@ -15,7 +16,9 @@ const Wrapper = styled.div`
   }
 `;
 
-const Movie = styled.div``;
+const Movie = styled.div`
+  position: relative;
+`;
 
 const MovieImg = styled(Image)`
   max-width: 100%;
@@ -30,8 +33,10 @@ const MovieImg = styled(Image)`
   }
 `;
 
-const MovieTitle = styled.h4`
+const MovieTitle = styled(Link)`
+  position: relative;
   cursor: pointer;
+  font-weight: bold;
 `;
 
 const fetchMovies = async () => {
@@ -43,6 +48,10 @@ const fetchMovies = async () => {
 
 export default function Home() {
   const movieList = useQuery(["movieList"], () => fetchMovies());
+  const router = useRouter();
+  const onClick = (id, title) => {
+    router.push(`/movies/${title}/${id}`);
+  };
 
   if (movieList.isLoading) {
     return <span>Loading...</span>;
@@ -55,16 +64,20 @@ export default function Home() {
     <Wrapper>
       <Seo title="Home" />
       {movieList.data.map((movie) => (
-        <>
-          <Movie key={movie.id}>
-            <MovieImg
-              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-              alt="Poster"
-              fill
-            />
-            <MovieTitle>{movie.original_title}</MovieTitle>
-          </Movie>
-        </>
+        <Movie key={movie.id}>
+          <MovieImg
+            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+            alt="Poster"
+            fill
+            sizes="100%"
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+            onClick={() => onClick(movie.id, movie.original_title)}
+          />
+          <MovieTitle href={`/movies/${movie.original_title}/${movie.id}`}>
+            {movie.original_title}
+          </MovieTitle>
+        </Movie>
       ))}
     </Wrapper>
   );

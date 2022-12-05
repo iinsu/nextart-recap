@@ -6,6 +6,7 @@ import styled from "styled-components";
 const Wrapper = styled.nav`
   position: relative;
   display: flex;
+  height: 100%;
   gap: 10px;
   flex-direction: column;
   align-items: center;
@@ -19,7 +20,12 @@ const Wrapper = styled.nav`
   }
 `;
 
-const Logo = styled(Image)`
+const Logo = styled.div`
+  position: relative;
+  height: 100%;
+`;
+
+const LogoImg = styled(Image)`
   max-width: 100px;
   margin-bottom: 5px;
   height: auto !important;
@@ -40,7 +46,9 @@ const NavBar = () => {
   const router = useRouter();
   return (
     <Wrapper>
-      <Logo src="/vercel.svg" fill alt="Logo" />
+      <Logo>
+        <LogoImg src="/vercel.svg" priority fill sizes="20%" alt="Logo" />
+      </Logo>
       <LinkBox>
         <LinkTag href="/" className={router.pathname === "/" && "active"}>
           Home
