@@ -37,7 +37,7 @@ const LinkBox = styled.div`
   gap: 10px;
 `;
 
-const LinkTag = styled(Link)`
+const LinkTab = styled(Link)`
   font-weight: 100px;
   margin-bottom: 5px;
 `;
@@ -50,15 +50,15 @@ const NavBar = () => {
         <LogoImg src="/vercel.svg" priority fill sizes="20%" alt="Logo" />
       </Logo>
       <LinkBox>
-        <LinkTag href="/" className={router.pathname === "/" && "active"}>
+        <LinkTab href="/" className={router.pathname === "/" && "active"}>
           Home
-        </LinkTag>
-        <LinkTag
+        </LinkTab>
+        <LinkTab
           href="/about"
           className={router.pathname === "/about" && "active"}
         >
           About
-        </LinkTag>
+        </LinkTab>
       </LinkBox>
     </Wrapper>
   );
